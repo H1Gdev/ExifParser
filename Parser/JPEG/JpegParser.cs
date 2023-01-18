@@ -46,7 +46,7 @@ namespace Media.Jpeg
                     {
                         if (markerCode.HasData())
                             // Data
-                            SkipStream(stream, size - 2U);
+                            Utility.SkipStream(stream, size - 2U);
                     }
 
                     if (markerCode == MarkerCode.SOS)
@@ -95,7 +95,7 @@ namespace Media.Jpeg
                             {
                                 if (markerCode.HasData())
                                     // Data
-                                    SkipStream(stream, size - 2U);
+                                    Utility.SkipStream(stream, size - 2U);
                             }
 
                             if (markerCode == MarkerCode.EOI)
@@ -119,19 +119,6 @@ namespace Media.Jpeg
                 throw new IOException("'Size' is invalid.");
 
             return size;
-        }
-
-        private static void SkipStream(Stream stream, uint dataSize)
-        {
-            if (stream.CanSeek)
-                stream.Seek(dataSize, SeekOrigin.Current);
-            else
-            {
-                var buffer = new byte[dataSize];
-                var read = stream.Read(buffer, 0, buffer.Length);
-                if (read < buffer.Length)
-                    throw new EndOfStreamException("'Data' is not enough.");
-            }
         }
     }
 }
